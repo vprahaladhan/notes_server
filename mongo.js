@@ -32,6 +32,6 @@ const note = new Note({
 // })
 
 Note.find({}).then(result => {
-    console.log(result.length)
+    console.log(result)
     mongoose.connection.close()
 })

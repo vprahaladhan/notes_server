@@ -4,16 +4,27 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+require('dotenv').config()
+
 app.use(bodyParser.json())
 app.use(cors())
 app.use(express.static('build'))
 
-let allNotes = []
+const Note = require('./models/note')
+
+const url = process.env.MONGODB_URI
+
+console.log('connecting to', url)
 
 const mongoose = require('mongoose')
 
-const url =
-    `mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority`
+mongoose.connect(url, { useNewUrlParser: true })
+    .then(result => {
+        console.log('connected to MongoDB')
+    })
+    .catch((error) => {
+        console.log('error connecting to MongoDB:', error.message)
+    })
 
 mongoose.connect(url, { useNewUrlParser: true })
 
@@ -25,11 +36,11 @@ const noteSchema = new mongoose.Schema({
 
 noteSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.__v
     }
-  })
+})
 
 const Note = mongoose.model('Note', noteSchema)
 
@@ -40,7 +51,10 @@ app.get('/', (req, res) => {
 app.get('/api/notes', (req, res) => {
     // Note.find({}).then(notes => res.json(notes.map(note => note.toJSON())))
     console.log("Fetching all notes...")
-    Note.find({}).then(notes => res.json(notes))
+    Note.find({}).then(notes => {
+        console.log(notes)
+        res.json(notes)
+    })
 })
 
 app.get('/api/notes/:id', (req, res) => {
@@ -68,7 +82,7 @@ app.delete('/api/notes/:id', (req, res) => {
     // response.status(204).end()
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`)
 })
