@@ -12,7 +12,7 @@ app.use(express.static('build'))
 
 const Note = require('./models/note')
 
-const url = process.env.MONGODB_URI
+const url = 'mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority'
 
 console.log('connecting to', url)
 
