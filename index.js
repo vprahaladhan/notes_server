@@ -42,8 +42,6 @@ noteSchema.set('toJSON', {
     }
 })
 
-const Note = mongoose.model('Note', noteSchema)
-
 app.get('/', (req, res) => {
     res.send('<h1>Welcome to Notes App!</h1>')
 })
