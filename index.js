@@ -18,6 +18,7 @@ console.log('connecting to', url)
 
 const mongoose = require('mongoose')
 
+console.log(url)
 mongoose.connect(url, { useNewUrlParser: true })
 
 const noteSchema = new mongoose.Schema({
