@@ -3,65 +3,65 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-app.use(express.static('build'))
 
 app.use(bodyParser.json())
 app.use(cors())
+app.use(express.static('build'))
+
+let allNotes = []
 
 const mongoose = require('mongoose')
 
-const password = 'admin'
-
 const url =
-  `mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority`
+    `mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true })
 
 const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
+    content: String,
+    date: Date,
+    important: Boolean,
 })
+
+noteSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+    }
+  })
 
 const Note = mongoose.model('Note', noteSchema)
 
-const note = new Note({
-  content: 'HTML is Easy',
-  date: new Date(),
-  important: false,
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to Notes App!</h1>')
+})
+  
+app.get('/api/notes', (req, res) => {
+    Note.find({}).then(notes => res.json(notes.map(note => note.toJSON())))
 })
 
-app.get('/api', (req, res) => {
-    res.send('<h1>Welcome to Notes app!</h1>')
+app.get('/api/notes/:id', (req, res) => {
+    Note.findById(req.params.id).then(note => res.json(note))
 })
 
-app.get('/api/notes', (request, response) => {
-    Note.find({}).then(notes => {
-        response.json(notes)
-        mongoose.connection.close()
+app.post('/api/notes', (req, res) => {
+    const note = new Note({
+        content: req.body.content,
+        date: new Date(),
+        important: false,
+    })
+    note.save().then(newNote => res.json(newNote.toJSON()))
+})
+
+app.put('/api/notes/:id', (req, res) => {
+    Note.findById(req.params.id).then(note => {
+        note.important = !note.important
+        note.save().then(newNote => res.json(newNote.toJSON()))
     })
 })
 
-app.get('/api/notes/:id', (request, response) => {
-    // response.json(notes.find(note => note.id == request.params.id))
-})
-
-app.post('/api/notes', (request, response) => {
-    note.save().then(response => {
-        console.log('note saved!')
-        response.json(request.body)
-        mongoose.connection.close()
-    })
-})
-
-app.put('/api/notes/:id', (request, response) => {
-    // const note = notes.find(note => note.id == request.params.id)
-    // note.content = request.body.content
-    // note.important = request.body.important
-    // response.status(204).end()
-})
-
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (req, res) => {
     // notes = notes.filter(note => note.id != request.params.id)
     // response.status(204).end()
 })
