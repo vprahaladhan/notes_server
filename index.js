@@ -31,18 +31,18 @@ const note = new Note({
   important: false,
 })
 
-app.get('/notes', (request, response) => {
+app.get('/api/notes', (request, response) => {
     Note.find({}).then(notes => {
         response.json(notes)
         mongoose.connection.close()
     })
 })
 
-app.get('/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response) => {
     response.json(notes.find(note => note.id == request.params.id))
 })
 
-app.post('/notes', (request, response) => {
+app.post('/api/notes', (request, response) => {
     note.save().then(response => {
         console.log('note saved!')
         response.json(request.body)
@@ -50,14 +50,14 @@ app.post('/notes', (request, response) => {
     })
 })
 
-app.put('/notes/:id', (request, response) => {
+app.put('/api/notes/:id', (request, response) => {
     const note = notes.find(note => note.id == request.params.id)
     note.content = request.body.content
     note.important = request.body.important
     response.status(204).end()
 })
 
-app.delete('/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response) => {
     notes = notes.filter(note => note.id != request.params.id)
     response.status(204).end()
 })
