@@ -14,7 +14,7 @@ const Note = require('./models/note')
 
 const url = 'mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority'
 
-console.log('connecting to', url)
+console.log('connecting to...', url)
 
 const mongoose = require('mongoose')
 
