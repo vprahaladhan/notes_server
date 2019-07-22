@@ -31,6 +31,10 @@ const note = new Note({
   important: false,
 })
 
+app.get('/api', (req, res) => {
+    res.send('<h1>Welcome to Notes app!</h1>')
+})
+
 app.get('/api/notes', (request, response) => {
     Note.find({}).then(notes => {
         response.json(notes)
@@ -39,7 +43,7 @@ app.get('/api/notes', (request, response) => {
 })
 
 app.get('/api/notes/:id', (request, response) => {
-    response.json(notes.find(note => note.id == request.params.id))
+    // response.json(notes.find(note => note.id == request.params.id))
 })
 
 app.post('/api/notes', (request, response) => {
@@ -51,15 +55,15 @@ app.post('/api/notes', (request, response) => {
 })
 
 app.put('/api/notes/:id', (request, response) => {
-    const note = notes.find(note => note.id == request.params.id)
-    note.content = request.body.content
-    note.important = request.body.important
-    response.status(204).end()
+    // const note = notes.find(note => note.id == request.params.id)
+    // note.content = request.body.content
+    // note.important = request.body.important
+    // response.status(204).end()
 })
 
 app.delete('/api/notes/:id', (request, response) => {
-    notes = notes.filter(note => note.id != request.params.id)
-    response.status(204).end()
+    // notes = notes.filter(note => note.id != request.params.id)
+    // response.status(204).end()
 })
 
 const PORT = process.env.PORT || 3001
