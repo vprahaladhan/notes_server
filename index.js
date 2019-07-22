@@ -19,14 +19,6 @@ console.log('connecting to', url)
 const mongoose = require('mongoose')
 
 mongoose.connect(url, { useNewUrlParser: true })
-    .then(result => {
-        console.log('connected to MongoDB')
-    })
-    .catch((error) => {
-        console.log('error connecting to MongoDB:', error.message)
-    })
-
-mongoose.connect(url, { useNewUrlParser: true })
 
 const noteSchema = new mongoose.Schema({
     content: String,
