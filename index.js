@@ -38,7 +38,8 @@ app.get('/', (req, res) => {
 })
   
 app.get('/api/notes', (req, res) => {
-    Note.find({}).then(notes => res.json(notes.map(note => note.toJSON())))
+    // Note.find({}).then(notes => res.json(notes.map(note => note.toJSON())))
+    Note.find({}).then(notes => res.json(notes))
 })
 
 app.get('/api/notes/:id', (req, res) => {
