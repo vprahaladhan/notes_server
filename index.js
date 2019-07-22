@@ -13,7 +13,7 @@ const mongoose = require('mongoose')
 const password = 'admin'
 
 const url =
-  `mongodb+srv://admin:${password}@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority`
+  `mongodb+srv://admin:admin@learn-mern-stack-nreww.gcp.mongodb.net/note-app?retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true })
 
